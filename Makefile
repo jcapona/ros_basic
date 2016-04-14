@@ -13,20 +13,25 @@ INCLUDES=-I/opt/ros/hydro/include -L/opt/ros/indigo/lib -Wl,-rpath,/opt/ros/indi
 CXXOPTS=-Wall -g -O2
 CXXFLAGS=$(CXXOPTS) $(INCLUDES)
 # Libs flags
-LDLIBS=-lroscpp -lrosconsole -lrostime
+LDLIBS=-lroscpp -lrosconsole -lrostime -lroscpp_serialization
 # Binaries
 HELLOWORLD=test/helloWorldNode
+TALKER=test/talker
 
 # Object
 OBJS_HELLOWORLD=src/helloWorldNode.o
+OBJS_TALKER=src/talker.o
 
-all: $(HELLOWORLD)
+all: $(HELLOWORLD) $(TALKER)
 
 $(HELLOWORLD): $(OBJS_HELLOWORLD)
+	$(CXX) $(INCLUDES) $^ -o $@ $(LDLIBS)
+
+$(TALKER): $(OBJS_TALKER)
 	$(CXX) $(INCLUDES) $^ -o $@ $(LDLIBS)
 
 bin/%.o: %.cc
 	$(CXX) -c $(CXXFLAGS) $< -o $@ $(LDLIBS)
 
 clean:
-	rm -f $(HELLOWORLD) $(OBJS_HELLOWORLD)
+	rm -f $(HELLOWORLD) $(OBJS_HELLOWORLD) $(TALKER) $(OBJS_TALKER)
