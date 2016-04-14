@@ -17,12 +17,14 @@ LDLIBS=-lroscpp -lrosconsole -lrostime -lroscpp_serialization
 # Binaries
 HELLOWORLD=test/helloWorldNode
 TALKER=test/talker
+SUBS=test/subscriber
 
 # Object
 OBJS_HELLOWORLD=src/helloWorldNode.o
 OBJS_TALKER=src/talker.o
+OBJS_SUBS=src/subscriber.o
 
-all: $(HELLOWORLD) $(TALKER)
+all: $(HELLOWORLD) $(TALKER) $(SUBS)
 
 $(HELLOWORLD): $(OBJS_HELLOWORLD)
 	$(CXX) $(INCLUDES) $^ -o $@ $(LDLIBS)
@@ -30,8 +32,11 @@ $(HELLOWORLD): $(OBJS_HELLOWORLD)
 $(TALKER): $(OBJS_TALKER)
 	$(CXX) $(INCLUDES) $^ -o $@ $(LDLIBS)
 
+$(SUBS): $(OBJS_SUBS)
+	$(CXX) $(INCLUDES) $^ -o $@ $(LDLIBS)
+
 bin/%.o: %.cc
 	$(CXX) -c $(CXXFLAGS) $< -o $@ $(LDLIBS)
 
 clean:
-	rm -f $(HELLOWORLD) $(OBJS_HELLOWORLD) $(TALKER) $(OBJS_TALKER)
+	rm -f $(HELLOWORLD) $(OBJS_HELLOWORLD) $(TALKER) $(OBJS_TALKER) $(SUBS) $(OBJS_SUBS)
